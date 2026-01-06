@@ -1,6 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-import streamlit as sl
+import streamlit as st
 
-print("Hello World")
+st.write("Hello World")
