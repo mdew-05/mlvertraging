@@ -22,9 +22,8 @@ for jaar in jaren:
     # 1.1 Opschonen
     df = df.dropna(subset=['duration_minutes'])
 
-    # 1.2 Tijdfeatures maken
+    # 1.2 Tijdfeatures en stations maken
     df['start_time'] = pd.to_datetime(df['start_time'])
-
     df['start_hour'] = df['start_time'].dt.hour
     df['start_dayofweek'] = df['start_time'].dt.dayofweek
     df['start_month'] = df['start_time'].dt.month
@@ -35,11 +34,10 @@ for jaar in jaren:
 
 # 1.3 Alles samenvoegen
 df = pd.concat(dfs, ignore_index=True)
+#treshhold 
 df = df[df['duration_minutes'] <= 30]
 
-# =========================
 # 3. Inputvelden
-# =========================
 rdt_line = st.selectbox(
     "Traject",
     options=df['rdt_lines'].dropna().unique()
@@ -76,9 +74,7 @@ input_df = pd.DataFrame([{
     'start_month': start_datetime.month
 }])
 
-# =========================
 # 4. Features & target
-# =========================
 y = df['duration_minutes']
 
 X = df[[
@@ -93,9 +89,7 @@ X = df[[
     'start_month'
 ]]
 
-# =========================
 # 5. Preprocessing
-# =========================
 categorical_features = ['ns_lines', 'rdt_lines', 'begin_station', 'end_station', 'cause_group', 'cause_nl']
 numeric_features = ['start_hour', 'start_dayofweek', 'start_month']
 
@@ -106,27 +100,21 @@ preprocessor = ColumnTransformer(
     ]
 )
 
-# =========================
 # 6. Model
-# =========================
 model = Pipeline([
     ('preprocessor', preprocessor),
     ('regressor', RandomForestRegressor(n_estimators=200, random_state=42, n_jobs=-1))
 ])
 
-# =========================
 # 7. Train / test split & evaluatie
-# =========================
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 model.fit(X_train, y_train)
 
 y_pred = model.predict(X_test)
 mae = mean_absolute_error(y_test, y_pred)
-st.write(f"✅ Model MAE op testset: {mae:.1f} minuten")
+st.write(f"Model MAE op testset: {mae:.1f} minuten")
 
-# =========================
 # 8. Predict knop
-# =========================
 if st.button("🔮 Voorspel vertraging"):
     prediction = model.predict(input_df)[0]
     st.success(f"⏱️ Verwachte vertraging: **{prediction:.1f} minuten** ± **{mae:.1f}**")
