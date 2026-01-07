@@ -35,12 +35,14 @@ for jaar in jaren:
 # 1.3 Alles samenvoegen
 df = pd.concat(dfs, ignore_index=True)
 
+# 2. Inputvelden
+
 # Slider voor maximale duur
 max_delay = st.slider(
     "Maximale duur van de vertraging (minuten)",
     min_value=0,    # minimaal 0 minuten
-    max_value=240,  # maximaal 240 minuten, kan je aanpassen
-    value=120,      # standaardwaarde
+    max_value=300,  # maximaal 240 minuten, kan je aanpassen
+    value=45,      # standaardwaarde
     step=5          # stapgrootte
 )
 
@@ -49,7 +51,7 @@ df = df[df['duration_minutes'] <= max_delay]
 st.write(f"Toont {len(df)} rijen met vertraging ≤ {max_delay} minuten.")
 
 
-# 3. Inputvelden
+
 rdt_line = st.selectbox(
     "Traject",
     options=df['rdt_lines'].dropna().unique()
