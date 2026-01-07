@@ -110,6 +110,6 @@ mae = mean_absolute_error(y_test, y_pred)
 # =========================
 # Predict knop
 # =========================
-if st.button("🔮 Voorspel vertraging"):
-    prediction = model.predict(input_df)[0]
-    st.success(f"⏱️ Verwachte vertraging: **{prediction:.1f} minuten**")
+st.button("🔮 Voorspel vertraging"):
+prediction = model.predict(input_df)[0]
+st.success(f"⏱️ Verwachte vertraging: **{prediction:.1f} minuten**")
