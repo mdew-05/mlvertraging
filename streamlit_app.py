@@ -1,6 +1,6 @@
 import pandas as pd
 import streamlit as st
-from datetime import datetime, timedelta
+from datetime import datetime
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.compose import ColumnTransformer
@@ -17,30 +17,30 @@ st.title("🚆 Vertraging voorspeller")
 st.write("Vul de reiscontext in en krijg een voorspelling van de vertraging.")
 
 # =========================
-# 2. Feature engineering
+# 2. Feature engineering: tijd en stations
 # =========================
 df['start_hour'] = df['start_time'].dt.hour
 df['start_dayofweek'] = df['start_time'].dt.weekday
 df['start_month'] = df['start_time'].dt.month
 
-# Splits stations in lijstjes
-df['station_list'] = df['rdt_station_names'].str.split(',')
-
-# Begin- en eindstation
-df['begin_station'] = df['station_list'].str[0]
-df['end_station'] = df['station_list'].str[-1]
+# Voeg begin en eindstation toe
+df['begin_station'] = df['rdt_station_names'].str.split(',').str[0]
+df['end_station'] = df['rdt_station_names'].str.split(',').str[-1]
 
 # =========================
 # 3. Inputvelden
 # =========================
 rdt_line = st.selectbox(
-    "RDT-lijn",
+    "Traject",
     options=df['rdt_lines'].dropna().unique()
 )
 
-# Stations van deze lijn
-stations_line = sorted({s for sublist in df[df['rdt_lines'] == rdt_line]['station_list'] for s in sublist})
+# Stations op deze lijn
+stations_line = sorted({s for sublist in df[df['rdt_lines'] == rdt_line]['rdt_station_names'].str.split(',') for s in sublist})
+
 begin_station = st.selectbox("Beginstation", options=stations_line)
+
+# Eindstations: alle stations behalve beginstation
 end_stations = [s for s in stations_line if s != begin_station]
 end_station = st.selectbox("Eindstation", options=end_stations)
 
@@ -49,48 +49,11 @@ date = st.date_input("Datum van de reis")
 time = st.time_input("Starttijd van de reis")
 start_datetime = datetime.combine(date, time)
 
-# Meest voorkomende ns_line / cause
+# Kies meest voorkomende ns_line, cause_group, cause_nl als default
 ns_line = df['ns_lines'].mode()[0]
 cause_group = df['cause_group'].mode()[0]
 cause_nl = df['cause_nl'].mode()[0]
 
-# =========================
-# 4. Bereken historische gemiddelde vertraging per segment
-# =========================
-records = []
-for _, row in df.iterrows():
-    stations = row['station_list']
-    hour = row['start_hour']
-    line = row['rdt_lines']
-    duration = row['duration_minutes']
-    # alle begin-eind combinaties op de lijn
-    for i, b in enumerate(stations[:-1]):
-        for e in stations[i+1:]:
-            records.append({
-                'rdt_lines': line,
-                'begin_station': b,
-                'end_station': e,
-                'start_hour': hour,
-                'duration_minutes': duration
-            })
-
-avg_df = pd.DataFrame(records)
-avg_delay = avg_df.groupby(['rdt_lines','begin_station','end_station','start_hour'])['duration_minutes'].mean().reset_index()
-avg_delay = avg_delay.rename(columns={'duration_minutes':'avg_delay'})
-
-# Vind historische gemiddelde voor input
-segment = avg_delay[
-    (avg_delay['rdt_lines']==rdt_line) &
-    (avg_delay['begin_station']==begin_station) &
-    (avg_delay['end_station']==end_station) &
-    (avg_delay['start_hour']==start_datetime.hour)
-]
-
-avg_segment_delay = segment['avg_delay'].values[0] if not segment.empty else df['duration_minutes'].mean()
-
-# =========================
-# 5. Input dataframe
-# =========================
 input_df = pd.DataFrame([{
     'ns_lines': ns_line,
     'rdt_lines': rdt_line,
@@ -100,67 +63,59 @@ input_df = pd.DataFrame([{
     'cause_nl': cause_nl,
     'start_hour': start_datetime.hour,
     'start_dayofweek': start_datetime.weekday(),
-    'start_month': start_datetime.month,
-    'avg_delay': avg_segment_delay
+    'start_month': start_datetime.month
 }])
 
 # =========================
-# 6. Features & target
+# 4. Features & target
 # =========================
 y = df['duration_minutes']
 
-X = pd.DataFrame({
-    'ns_lines': df['ns_lines'],
-    'rdt_lines': df['rdt_lines'],
-    'begin_station': df['begin_station'],
-    'end_station': df['end_station'],
-    'cause_group': df['cause_group'],
-    'cause_nl': df['cause_nl'],
-    'start_hour': df['start_hour'],
-    'start_dayofweek': df['start_dayofweek'],
-    'start_month': df['start_month'],
-    'avg_delay': df['duration_minutes']  # placeholder voor training
-})
-
-# Voeg avg_delay toe
-# Merge avg_delay in X
-X = X.merge(avg_delay, on=['rdt_lines','begin_station','end_station','start_hour'], how='left')
-
-# Zorg dat kolom altijd bestaat
-if 'avg_delay' not in X.columns:
-    X['avg_delay'] = avg_delay['avg_delay'].mean()
-
-# Vul eventuele ontbrekende waarden
-X['avg_delay'] = X['avg_delay'].fillna(avg_delay['avg_delay'].mean())
-
+X = df[[
+    'ns_lines',
+    'rdt_lines',
+    'begin_station',
+    'end_station',
+    'cause_group',
+    'cause_nl',
+    'start_hour',
+    'start_dayofweek',
+    'start_month'
+]]
 
 # =========================
-# 7. Preprocessing & model
+# 5. Preprocessing
 # =========================
-categorical_features = ['ns_lines','rdt_lines','begin_station','end_station','cause_group','cause_nl']
-numeric_features = ['start_hour','start_dayofweek','start_month','avg_delay']
+categorical_features = ['ns_lines', 'rdt_lines', 'begin_station', 'end_station', 'cause_group', 'cause_nl']
+numeric_features = ['start_hour', 'start_dayofweek', 'start_month']
 
-preprocessor = ColumnTransformer(transformers=[
-    ('cat', OneHotEncoder(handle_unknown='ignore'), categorical_features),
-    ('num', 'passthrough', numeric_features)
-])
+preprocessor = ColumnTransformer(
+    transformers=[
+        ('cat', OneHotEncoder(handle_unknown='ignore'), categorical_features),
+        ('num', 'passthrough', numeric_features)
+    ]
+)
 
+# =========================
+# 6. Model
+# =========================
 model = Pipeline([
     ('preprocessor', preprocessor),
     ('regressor', RandomForestRegressor(n_estimators=200, random_state=42, n_jobs=-1))
 ])
 
 # =========================
-# 8. Train/test split
+# 7. Train / test split & evaluatie
 # =========================
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 model.fit(X_train, y_train)
+
 y_pred = model.predict(X_test)
 mae = mean_absolute_error(y_test, y_pred)
 st.write(f"✅ Model MAE op testset: {mae:.1f} minuten")
 
 # =========================
-# 9. Voorspelling
+# 8. Predict knop
 # =========================
 if st.button("🔮 Voorspel vertraging"):
     prediction = model.predict(input_df)[0]
