@@ -24,7 +24,7 @@ df['start_month'] = df['start_time'].dt.month
 df['station_list'] = df['rdt_station_names'].str.split(',')
 
 # 3. Inputvelden
-rdt_line = st.selectbox("RDT-lijn", options=df['rdt_lines'].unique())
+rdt_line = st.selectbox("Traject", options=df['rdt_lines'].unique())
 
 # Stations op deze lijn
 stations_line = sorted({s for sublist in df[df['rdt_lines'] == rdt_line]['station_list'] for s in sublist})
