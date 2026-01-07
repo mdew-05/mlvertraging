@@ -20,6 +20,9 @@ st.title("🚆 Vertraging voorspeller")
 
 st.write("Vul de reiscontext in en krijg een voorspelling van de vertraging.")
 
+ns_line = df['ns_lines'].mode()[0]        # most frequent ns_line
+cause_group = df['cause_group'].mode()[0] # most frequent cause_group
+cause_nl = df['cause_nl'].mode()[0]       # most frequent cause_nl
 # Inputvelden
 rdt_line = st.selectbox(
     "RDT-lijn",
