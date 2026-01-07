@@ -11,61 +11,31 @@ from sklearn.metrics import mean_absolute_error
 st.title("🚆 Vertraging voorspeller")
 st.write("Vul de reiscontext in en krijg een voorspelling van de vertraging.")
 
-# =========================
 # 1. Data inlezen
-# =========================
 jaren = ["24", "25"]
 
-dfs = []  # hier verzamelen we alle jaren
+dfs = [] 
 
 for jaar in jaren:
     df = pd.read_csv(f"disruptions-20{jaar}.csv")
 
-    # =========================
     # 1.1 Opschonen
-    # =========================
     df = df.dropna(subset=['duration_minutes'])
 
-    # =========================
     # 1.2 Tijdfeatures maken
-    # =========================
     df['start_time'] = pd.to_datetime(df['start_time'])
 
     df['start_hour'] = df['start_time'].dt.hour
     df['start_dayofweek'] = df['start_time'].dt.dayofweek
     df['start_month'] = df['start_time'].dt.month
-
-    # (optioneel) jaar toevoegen als feature
     df['year'] = df['start_time'].dt.year
-
+    df['begin_station'] = df['rdt_station_names'].str.split(',').str[0]
+    df['end_station'] = df['rdt_station_names'].str.split(',').str[-1]
     dfs.append(df)
 
-# =========================
 # 1.3 Alles samenvoegen
-# =========================
 df = pd.concat(dfs, ignore_index=True)
-# =========================
-# 2. Opschonen
-# =========================
-df = df.dropna(subset=['duration_minutes'])
-
-#(Treshold) lager = nauwkeuriger
 df = df[df['duration_minutes'] <= 30]
-# =========================
-# 3. Tijdfeatures maken
-# =========================
-df['start_time'] = pd.to_datetime(df['start_time'])
-
-# =========================
-# 4. Feature engineering: tijd en stations
-# =========================
-df['start_hour'] = df['start_time'].dt.hour
-df['start_dayofweek'] = df['start_time'].dt.weekday
-df['start_month'] = df['start_time'].dt.month
-
-# Voeg begin en eindstation toe
-df['begin_station'] = df['rdt_station_names'].str.split(',').str[0]
-df['end_station'] = df['rdt_station_names'].str.split(',').str[-1]
 
 # =========================
 # 3. Inputvelden
