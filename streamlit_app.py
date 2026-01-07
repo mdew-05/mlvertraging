@@ -115,7 +115,6 @@ avg_delay = avg_delay.rename(columns={'duration_minutes':'avg_delay'})
 
 # Merge avg_delay in X_train
 X = X.merge(avg_delay, on=['rdt_lines','begin_station','end_station','start_hour'], how='left')
-X['avg_delay'] = X['avg_delay'].fillna(avg_delay['avg_delay'].mean())
 
 # =========================
 # 7. Preprocessing & model
