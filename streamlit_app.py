@@ -48,7 +48,9 @@ df = pd.concat(dfs, ignore_index=True)
 # 2. Opschonen
 # =========================
 df = df.dropna(subset=['duration_minutes'])
-df = df[df['duration_minutes'] <= 60]
+
+#(Treshold) lager = nauwkeuriger
+df = df[df['duration_minutes'] <= 30]
 # =========================
 # 3. Tijdfeatures maken
 # =========================
