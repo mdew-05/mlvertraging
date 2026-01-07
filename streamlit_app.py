@@ -39,6 +39,34 @@ date = st.date_input("Datum van de reis")
 time = st.time_input("Starttijd van de reis")
 start_datetime = datetime.combine(date, time)
 
+# 4. Historische gemiddelde vertraging op daadwerkelijke treinen
+time_window = timedelta(minutes=30)  # ±30 min
+
+df_filtered = df[
+    (df['rdt_lines'] == rdt_line) &
+    (df['station_list'].apply(lambda x: x[0]) == begin_station) &
+    (df['station_list'].apply(lambda x: x[-1]) == end_station) &
+    (df['start_time'] >= (start_datetime - time_window)) &
+    (df['start_time'] <= (start_datetime + time_window))
+]
+
+if not df_filtered.empty:
+    avg_delay_value = df_filtered['duration_minutes'].mean()
+else:
+    # fallback: gemiddelde van alle ritten op deze lijn
+    df_line = df[df['rdt_lines'] == rdt_line]
+    avg_delay_value = df_line['duration_minutes'].mean() if not df_line.empty else df['duration_minutes'].mean()
+
+# 5. Input dataframe
+input_df = pd.DataFrame([{
+    'rdt_lines': rdt_line,
+    'begin_station': begin_station,
+    'end_station': end_station,
+    'start_hour': start_datetime.hour,
+    'start_dayofweek': start_datetime.weekday(),
+    'start_month': start_datetime.month,
+    'avg_delay': avg_delay_value
+}])
 
 # 6. Features & target voor training
 y = df['duration_minutes']
