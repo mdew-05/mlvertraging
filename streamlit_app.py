@@ -123,8 +123,16 @@ X = pd.DataFrame({
 })
 
 # Voeg avg_delay toe
+# Merge avg_delay in X
 X = X.merge(avg_delay, on=['rdt_lines','begin_station','end_station','start_hour'], how='left')
+
+# Zorg dat kolom altijd bestaat
+if 'avg_delay' not in X.columns:
+    X['avg_delay'] = avg_delay['avg_delay'].mean()
+
+# Vul eventuele ontbrekende waarden
 X['avg_delay'] = X['avg_delay'].fillna(avg_delay['avg_delay'].mean())
+
 
 # =========================
 # 7. Preprocessing & model
