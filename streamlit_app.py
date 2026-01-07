@@ -48,7 +48,7 @@ max_delay = st.slider(
 
 # Filter dataframe
 df = df[df['duration_minutes'] <= max_delay]
-st.write(f"Toont {len(df)} rijen met vertraging ≤ {max_delay} minuten.")
+st.write(f"Maximale vertaging = {max_delay} minuten.")
 
 
 
