@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 from datetime import datetime
-df_all = pd.read_csv("df_all.csv", parse_dates=["start_time"])
+df = pd.read_csv("df_all.csv", parse_dates=["start_time"])
 # =========================
 # Titel
 # =========================
@@ -15,7 +15,7 @@ st.write("Vul de reiscontext in en krijg een voorspelling van de vertraging (≤
 # =========================
 rdt_line = st.selectbox(
     "RDT-lijn",
-    options=df_all['rdt_lines'].dropna().unique()
+    options=df['rdt_lines'].dropna().unique()
 )
 
 date = st.date_input("Datum van de reis")
@@ -34,6 +34,68 @@ input_df = pd.DataFrame(
         'start_month': start_datetime.month
     }]
 )
+
+
+# =========================
+# 3. Features & target
+# =========================
+y = df['duration_minutes']
+
+X = df[
+    [
+        'rdt_lines',
+        'start_hour',
+        'start_dayofweek',
+        'start_month'
+    ]
+]
+
+# =========================
+# 4. Preprocessing
+# =========================
+categorical_features = [
+    'rdt_lines'
+]
+
+numeric_features = [
+    'start_hour',
+    'start_dayofweek',
+    'start_month'
+]
+
+preprocessor = ColumnTransformer(
+    transformers=[
+        ('cat', OneHotEncoder(handle_unknown='ignore'), categorical_features),
+        ('num', 'passthrough', numeric_features)
+    ]
+)
+
+# =========================
+# 5. Model
+# =========================
+model = Pipeline(
+    steps=[
+        ('preprocessor', preprocessor),
+        ('regressor', RandomForestRegressor(
+            n_estimators=200,
+            random_state=42,
+            n_jobs=-1
+        ))
+    ]
+)
+
+# =========================
+# 6. Train / test & evaluatie
+# =========================
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+model.fit(X_train, y_train)
+
+y_pred = model.predict(X_test)
+
+mae = mean_absolute_error(y_test, y_pred)
 
 # =========================
 # Predict knop
