@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 from datetime import datetime
-
+df_all = pd.read_csv("df_all.csv", parse_dates=["start_time"])
 # =========================
 # Titel
 # =========================
