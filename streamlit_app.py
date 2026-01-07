@@ -129,9 +129,9 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 model.fit(X_train, y_train)
 y_pred = model.predict(X_test)
 mae = mean_absolute_error(y_test, y_pred)
-st.write(f"✅ Model MAE op testset: {mae:.1f} minuten")
+st.write(f"Model MAE op testset: {mae:.1f} minuten")
 
 # 9. Voorspelling
-if st.button("🔮 Voorspel vertraging"):
+if st.button("Voorspel vertraging"):
     prediction = model.predict(input_df)[0]
-    st.success(f"⏱️ Verwachte vertraging: **{prediction:.1f} minuten**")
+    st.success(f"Verwachte vertraging: **{prediction:.1f} minuten**")
