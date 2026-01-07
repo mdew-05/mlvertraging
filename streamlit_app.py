@@ -13,24 +13,9 @@ st.write("Vul de reiscontext in en krijg een voorspelling van de vertraging (≤
 # =========================
 # Inputvelden
 # =========================
-ns_line = st.selectbox(
-    "NS-lijn",
-    options=df_all['ns_lines'].dropna().unique()
-)
-
 rdt_line = st.selectbox(
     "RDT-lijn",
     options=df_all['rdt_lines'].dropna().unique()
-)
-
-cause_group = st.selectbox(
-    "Oorzaak (groep)",
-    options=df_all['cause_group'].dropna().unique()
-)
-
-cause_nl = st.selectbox(
-    "Specifieke oorzaak",
-    options=df_all['cause_nl'].dropna().unique()
 )
 
 date = st.date_input("Datum van de reis")
@@ -43,10 +28,7 @@ start_datetime = datetime.combine(date, time)
 
 input_df = pd.DataFrame(
     [{
-        'ns_lines': ns_line,
         'rdt_lines': rdt_line,
-        'cause_group': cause_group,
-        'cause_nl': cause_nl,
         'start_hour': start_datetime.hour,
         'start_dayofweek': start_datetime.weekday(),
         'start_month': start_datetime.month
