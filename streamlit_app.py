@@ -8,21 +8,34 @@ from sklearn.pipeline import Pipeline
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error
 
-# DF inlezen
+# =========================
+# 1. Data inlezen
+# =========================
 df = pd.read_csv("df_all.csv", parse_dates=["start_time"])
 
 st.title("🚆 Vertraging voorspeller")
 st.write("Vul de reiscontext in en krijg een voorspelling van de vertraging.")
 
 # =========================
-# 1. Input: RDT-lijn, beginstation, eindstation, datum/tijd
+# 2. Feature engineering: tijd en stations
+# =========================
+df['start_hour'] = df['start_time'].dt.hour
+df['start_dayofweek'] = df['start_time'].dt.weekday
+df['start_month'] = df['start_time'].dt.month
+
+# Voeg begin en eindstation toe
+df['begin_station'] = df['rdt_station_names'].str.split(',').str[0]
+df['end_station'] = df['rdt_station_names'].str.split(',').str[-1]
+
+# =========================
+# 3. Inputvelden
 # =========================
 rdt_line = st.selectbox(
     "RDT-lijn",
     options=df['rdt_lines'].dropna().unique()
 )
 
-# Stations van deze lijn
+# Stations op deze lijn
 stations_line = sorted({s for sublist in df[df['rdt_lines'] == rdt_line]['rdt_station_names'].str.split(',') for s in sublist})
 
 begin_station = st.selectbox("Beginstation", options=stations_line)
@@ -36,12 +49,10 @@ date = st.date_input("Datum van de reis")
 time = st.time_input("Starttijd van de reis")
 start_datetime = datetime.combine(date, time)
 
-# =========================
-# 2. Feature engineering
-# =========================
-ns_line = df['ns_lines'].mode()[0]        # meest voorkomende ns_line
-cause_group = df['cause_group'].mode()[0] # meest voorkomende cause_group
-cause_nl = df['cause_nl'].mode()[0]       # meest voorkomende cause_nl
+# Kies meest voorkomende ns_line, cause_group, cause_nl als default
+ns_line = df['ns_lines'].mode()[0]
+cause_group = df['cause_group'].mode()[0]
+cause_nl = df['cause_nl'].mode()[0]
 
 input_df = pd.DataFrame([{
     'ns_lines': ns_line,
@@ -56,15 +67,15 @@ input_df = pd.DataFrame([{
 }])
 
 # =========================
-# 3. Features & target
+# 4. Features & target
 # =========================
 y = df['duration_minutes']
 
 X = df[[
     'ns_lines',
     'rdt_lines',
-    'begin_station',  # toegevoegd
-    'end_station',    # toegevoegd
+    'begin_station',
+    'end_station',
     'cause_group',
     'cause_nl',
     'start_hour',
@@ -72,12 +83,8 @@ X = df[[
     'start_month'
 ]]
 
-# Voeg begin/end station toe aan df als eerste/laatste van lijst
-X['begin_station'] = X['rdt_station_names'].str.split(',').str[0]
-X['end_station'] = X['rdt_station_names'].str.split(',').str[-1]
-
 # =========================
-# 4. Preprocessing
+# 5. Preprocessing
 # =========================
 categorical_features = ['ns_lines', 'rdt_lines', 'begin_station', 'end_station', 'cause_group', 'cause_nl']
 numeric_features = ['start_hour', 'start_dayofweek', 'start_month']
@@ -90,7 +97,7 @@ preprocessor = ColumnTransformer(
 )
 
 # =========================
-# 5. Model
+# 6. Model
 # =========================
 model = Pipeline([
     ('preprocessor', preprocessor),
@@ -98,15 +105,17 @@ model = Pipeline([
 ])
 
 # =========================
-# 6. Train / test & evaluatie
+# 7. Train / test split & evaluatie
 # =========================
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 model.fit(X_train, y_train)
+
 y_pred = model.predict(X_test)
 mae = mean_absolute_error(y_test, y_pred)
+st.write(f"✅ Model MAE op testset: {mae:.1f} minuten")
 
 # =========================
-# 7. Voorspelling knop
+# 8. Predict knop
 # =========================
 if st.button("🔮 Voorspel vertraging"):
     prediction = model.predict(input_df)[0]
