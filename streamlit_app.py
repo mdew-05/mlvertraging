@@ -8,16 +8,54 @@ from sklearn.pipeline import Pipeline
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error
 
-# =========================
-# 1. Data inlezen
-# =========================
-df = pd.read_csv("df_all.csv", parse_dates=["start_time"])
-
 st.title("🚆 Vertraging voorspeller")
 st.write("Vul de reiscontext in en krijg een voorspelling van de vertraging.")
 
 # =========================
-# 2. Feature engineering: tijd en stations
+# 1. Data inlezen
+# =========================
+jaren = ["24", "25"]
+
+dfs = []  # hier verzamelen we alle jaren
+
+for jaar in jaren:
+    df = pd.read_csv(f"disruptions-20{jaar}.csv")
+
+    # =========================
+    # 1.1 Opschonen
+    # =========================
+    df = df.dropna(subset=['duration_minutes'])
+
+    # =========================
+    # 1.2 Tijdfeatures maken
+    # =========================
+    df['start_time'] = pd.to_datetime(df['start_time'])
+
+    df['start_hour'] = df['start_time'].dt.hour
+    df['start_dayofweek'] = df['start_time'].dt.dayofweek
+    df['start_month'] = df['start_time'].dt.month
+
+    # (optioneel) jaar toevoegen als feature
+    df['year'] = df['start_time'].dt.year
+
+    dfs.append(df)
+
+# =========================
+# 1.3 Alles samenvoegen
+# =========================
+df = pd.concat(dfs, ignore_index=True)
+# =========================
+# 2. Opschonen
+# =========================
+df = df.dropna(subset=['duration_minutes'])
+df = df[df['duration_minutes'] <= 60]
+# =========================
+# 3. Tijdfeatures maken
+# =========================
+df['start_time'] = pd.to_datetime(df['start_time'])
+
+# =========================
+# 4. Feature engineering: tijd en stations
 # =========================
 df['start_hour'] = df['start_time'].dt.hour
 df['start_dayofweek'] = df['start_time'].dt.weekday
