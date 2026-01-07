@@ -79,28 +79,33 @@ input_df = pd.DataFrame([{
     'start_month': start_datetime.month
 }])
 
-# Voeg historisch gemiddelde toe
+# Voeg historisch gemiddelde toe aan input
 avg = avg_delay[
     (avg_delay['rdt_lines'] == rdt_line) &
     (avg_delay['begin_station'] == begin_station) &
     (avg_delay['end_station'] == end_station) &
     (avg_delay['start_hour'] == start_datetime.hour)
 ]
-input_df['avg_delay'] = avg['avg_delay'].values[0] if not avg.empty else df['duration_minutes'].mean()
+input_df['avg_delay'] = avg['avg_delay'].values[0] if not avg.empty else avg_delay['avg_delay'].mean()
 
 # =========================
 # 5. Features & target
 # =========================
 y = df['duration_minutes']
+
+# Voor training: kies begin/end station als eerste/laatste station in lijn, voeg avg_delay correct toe
 X = pd.DataFrame({
     'rdt_lines': df['rdt_lines'],
     'begin_station': df['station_list'].apply(lambda x: x[0]),
     'end_station': df['station_list'].apply(lambda x: x[-1]),
     'start_hour': df['start_hour'],
     'start_dayofweek': df['start_dayofweek'],
-    'start_month': df['start_month'],
-    'avg_delay': df['duration_minutes']  # tijdelijk als proxy
+    'start_month': df['start_month']
 })
+
+# Merge historische avg_delay
+X = X.merge(avg_delay, on=['rdt_lines','begin_station','end_station','start_hour'], how='left')
+X['avg_delay'] = X['avg_delay'].fillna(avg_delay['avg_delay'].mean())  # vul missende waarden
 
 # =========================
 # 6. Preprocessing & model
