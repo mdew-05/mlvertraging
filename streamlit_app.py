@@ -1,7 +1,16 @@
-import streamlit as st
 import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
 import numpy as np
 from datetime import datetime
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import OneHotEncoder
+from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import mean_absolute_error
+
+
 df = pd.read_csv("df_all.csv", parse_dates=["start_time"])
 # =========================
 # Titel
