@@ -35,7 +35,7 @@ for jaar in jaren:
 # 1.3 Alles samenvoegen
 df = pd.concat(dfs, ignore_index=True)
 #treshhold 
-df = df[df['duration_minutes'] <= 30]
+df = df[df['duration_minutes'] <= 120]
 
 # 3. Inputvelden
 rdt_line = st.selectbox(
