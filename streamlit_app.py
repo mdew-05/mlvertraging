@@ -31,7 +31,7 @@ df['end_station'] = df['rdt_station_names'].str.split(',').str[-1]
 # 3. Inputvelden
 # =========================
 rdt_line = st.selectbox(
-    "RDT-lijn",
+    "Traject",
     options=df['rdt_lines'].dropna().unique()
 )
 
