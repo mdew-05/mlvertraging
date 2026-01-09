@@ -40,7 +40,7 @@ with tab1:
     st.write("Probleem -> vertraging")
     st.write("Ongeveer 10% van reizigers meer dan 5 minuten (Times, 2025)")
     st.write("Oplossing -> Machine learning model")
-    
+    st.write("Hypothese: Op drukkere plekken is de vertraging hoger")
 with tab2:
     st.title("Data")
     st.write("De data is afkomstig van de rijden de treinen treinstoringen dataset")
