@@ -227,7 +227,7 @@ with tab4:
     image = Image.open("metrics ml.png")
     st.image(image, caption="Metrics van het model", use_column_width=True)
     st.subheader("Hypothese testen")
-    st.write("Bij deze twee voorspellingen zijn alleen de stations veranderd, de maximale vertraging is 60 minuten en de voorspelling is om 8:00 in de ochtend")
+    st.write("Bij deze twee voorspellingen zijn alleen de stations veranderd, de maximale vertraging is ingesteld op 60 minuten, op 8:00 in de ochtend en op een vrijdag")
     col1, col2 = st.columns(2)
     with col1: 
         st.write("Schiphol airport naar Utrecht cen. (Drukke stations)")
