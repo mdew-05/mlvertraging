@@ -195,7 +195,7 @@ with tab4:
             y_pred_md = temp_model.predict(X_test_md)
 
             mae_scores.append(mean_absolute_error(y_test_md, y_pred_md))
-            rmse_scores.append(np.sqrt(np.mean((y_test_md - y_pred_md)**2)))
+            rmse_scores.append(root_mean_squared_error(y_test_md, y_pred_md))
             r2_scores.append(r2_score(y_test_md, y_pred_md))
 
         # Sla de resultaten op in session_state
