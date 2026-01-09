@@ -79,7 +79,8 @@ with tab3:
     date = st.date_input("Datum van de reis")
     time = st.time_input("Starttijd van de reis")
     start_datetime = datetime.combine(date, time)
-    
+
+    """
     # Kies meest voorkomende ns_line, cause_group, cause_nl als default
     ns_line = df['ns_lines'].mode()[0]
     cause_group = df['cause_group'].mode()[0]
@@ -96,7 +97,7 @@ with tab3:
         'start_dayofweek': start_datetime.weekday(),
         'start_month': start_datetime.month
     }])
-    
+    """
     # 4. Features & target
     y = df['duration_minutes']
     
@@ -143,5 +144,5 @@ with tab3:
     
     # 8. Predict knop
     if st.button("🔮 Voorspel vertraging"):
-        prediction = model.predict(input_df)[0]
+        prediction = model.predict(df)[0]
         st.success(f"⏱️ Verwachte vertraging: **{prediction:.1f} minuten** ± **{mae:.1f}**")
