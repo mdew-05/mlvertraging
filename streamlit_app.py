@@ -43,7 +43,19 @@ with tab1:
 with tab2:
     st.title("Data")
     st.write("De data is afkomstig van de rijden de treinen treinstoringen dataset")
-    plt.hist(df["duration_minutes"][df["duration_minutes"] < 300])
+
+    fig, ax = plt.subplots()
+    
+    ax.hist(
+        df.loc[df["duration_minutes"] < 300, "duration_minutes"],
+        bins=50
+    )
+    
+    ax.set_xlabel("Delay (minutes)")
+    ax.set_ylabel("Count")
+    ax.set_title("Distribution of delays (< 300 minutes)")
+    
+    st.pyplot(fig)
     
 with tab3: 
     st.title("🚆 Vertraging voorspeller")
