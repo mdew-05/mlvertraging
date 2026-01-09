@@ -47,13 +47,13 @@ with tab2:
     fig, ax = plt.subplots()
     
     ax.hist(
-        df.loc[df["duration_minutes"] < 300, "duration_minutes"],
+        df.loc[df["duration_minutes"] < 500, "duration_minutes"],
         bins=50
     )
     ax.set_xlim(left=0)
     ax.set_xlabel("Vertraging (minuten)")
     ax.set_ylabel("Aantal storingen")
-    ax.set_title("Verdeling van storingen (< 300 minutes)")
+    ax.set_title("Verdeling van storingen (< 500 minuten)")
     
     st.pyplot(fig)
     
