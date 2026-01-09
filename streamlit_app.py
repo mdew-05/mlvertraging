@@ -1,5 +1,6 @@
 import pandas as pd
 import streamlit as st
+import matplotlib.pyplot as plt
 from datetime import datetime
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OneHotEncoder
@@ -7,6 +8,7 @@ from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error, root_mean_squared_error, r2_score
+
 tab1, tab2, tab3 = st.tabs(["Introductie", "Data", "Model"])
 with tab1:
     st.title("Introductie")
@@ -16,7 +18,7 @@ with tab1:
 with tab2:
     st.title("Data")
     st.write("De data is afkomstig van de rijden de treinen treinstoringen dataset")
-    
+    plt.hist(df[df["duration_minutes"] < 300])
 with tab3: 
     st.title("🚆 Vertraging voorspeller")
     st.write("Vul de reiscontext in en krijg een voorspelling van de vertraging.")
