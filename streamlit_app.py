@@ -77,50 +77,52 @@ with tab2:
     ax2.set_xticklabels(range(0, 24))
     st.pyplot(fig2)
 
-    st.subheader("Drukste stations (meeste storingen)")
-    
-    # Begin + eindstation combineren en tellen
-    stations = pd.concat([
-        df["begin_station"],
-        df["end_station"]
-    ])
-    
-    station_counts = stations.value_counts()
-    
-    # (optioneel) ruis filteren
-    station_counts = station_counts[station_counts >= 10]
-    
-    # ── Drukste stations ─────────────────────
-    drukste_stations = station_counts.nlargest(10)
-    
-    fig3, ax3 = plt.subplots()
-    ax3.barh(drukste_stations.index, drukste_stations.values)
-    ax3.set_xlabel("Aantal storingen")
-    ax3.set_ylabel("Station")
-    ax3.set_title("Top 10 drukste stations")
-    ax3.invert_yaxis()
-    
-    st.pyplot(fig3)
-    
-    
-    # ── Minst drukke stations ─────────────────
-    st.subheader("Minst drukke stations (minste storingen)")
-    
-    minst_drukke_stations = (
-        station_counts
-        .nsmallest(10)
-        .sort_values()
-    )
-    
-    fig4, ax4 = plt.subplots()
-    ax4.barh(minst_drukke_stations.index, minst_drukke_stations.values)
-    ax4.set_xlabel("Aantal storingen")
-    ax4.set_ylabel("Station")
-    ax4.set_title("Top 10 minst drukke stations")
-    
-    st.pyplot(fig4)
-
+    col7, col8 = st.columns(2)
+    with col7:
+        st.subheader("Drukste stations (meeste storingen)")
         
+        # Begin + eindstation combineren en tellen
+        stations = pd.concat([
+            df["begin_station"],
+            df["end_station"]
+        ])
+        
+        station_counts = stations.value_counts()
+        
+        # (optioneel) ruis filteren
+        station_counts = station_counts[station_counts >= 10]
+        
+        # ── Drukste stations ─────────────────────
+        drukste_stations = station_counts.nlargest(10)
+
+        fig3, ax3 = plt.subplots()
+        ax3.barh(drukste_stations.index, drukste_stations.values)
+        ax3.set_xlabel("Aantal storingen")
+        ax3.set_ylabel("Station")
+        ax3.set_title("Top 10 drukste stations")
+        ax3.invert_yaxis()
+        
+        st.pyplot(fig3)
+        
+    with col8:
+        # ── Minst drukke stations ─────────────────
+        st.subheader("Minst drukke stations (minste storingen)")
+        
+        minst_drukke_stations = (
+            station_counts
+            .nsmallest(10)
+            .sort_values()
+        )
+        
+        fig4, ax4 = plt.subplots()
+        ax4.barh(minst_drukke_stations.index, minst_drukke_stations.values)
+        ax4.set_xlabel("Aantal storingen")
+        ax4.set_ylabel("Station")
+        ax4.set_title("Top 10 minst drukke stations")
+        
+        st.pyplot(fig4)
+    
+            
 with tab3: 
     st.title("🚆 Vertraging voorspeller")
     st.write("Vul de reiscontext in en krijg een voorspelling van de vertraging.")
