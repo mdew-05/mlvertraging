@@ -108,10 +108,10 @@ with tab2:
     
     station_counts = stations.value_counts()
     
-    # (optioneel) ruis filteren
+    # ruis filteren
     station_counts = station_counts[station_counts >= 10]
     
-    # ── Drukste stations ─────────────────────
+    # Drukste stations
     drukste_stations = station_counts.nlargest(10)
 
     fig3, ax3 = plt.subplots()
@@ -124,7 +124,7 @@ with tab2:
     st.pyplot(fig3)
     
 
-    # ── Minst drukke stations ─────────────────
+    #  Minst drukke stations
     st.subheader("Minst drukke stations (minste storingen)")
     
     minst_drukke_stations = (
@@ -153,10 +153,10 @@ with tab3:
     # Slider voor maximale duur
     max_delay = st.slider(
         "Maximale duur van de vertraging (minuten)",
-        min_value=0,    # minimaal 0 minuten
-        max_value=300,  # maximaal 300 minuten, kan je aanpassen
-        value=30,      # standaardwaarde
-        step=5          # stapgrootte
+        min_value=0,  
+        max_value=300, 
+        value=30,     
+        step=5      
     )
     
     # Filter dataframe
@@ -182,7 +182,7 @@ with tab3:
     time = st.time_input("Starttijd van de reis")
     start_datetime = datetime.combine(date, time)
 
-    # 4. Features & target
+    # 4 Features & target
     y = df['duration_minutes']
     
     X = df[[
@@ -197,7 +197,7 @@ with tab3:
         'start_month'
     ]]
     
-    # 5. Preprocessing
+    # 5 Preprocessing
     categorical_features = ['ns_lines', 'rdt_lines', 'begin_station', 'end_station', 'cause_group', 'cause_nl']
     numeric_features = ['start_hour', 'start_dayofweek', 'start_month']
     
@@ -208,7 +208,7 @@ with tab3:
         ]
     )
     
-    # 6. Model
+    # 6 Model 
     model = Pipeline([
         ('preprocessor', preprocessor),
         ('regressor', RandomForestRegressor(n_estimators=50, random_state=42, n_jobs=-1))
@@ -227,7 +227,6 @@ with tab3:
     st.write(f"Model R2 op testset: {r2:.2f}")
     
     if st.button("🔮 Voorspel vertraging"):
-        # Maak een klein dataframe met alleen de geselecteerde input
         input_df = pd.DataFrame([{
             'ns_lines': df[df['rdt_lines'] == rdt_line]['ns_lines'].iloc[0],
             'rdt_lines': rdt_line,
