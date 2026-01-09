@@ -88,7 +88,7 @@ with tab2:
     station_counts = stations.value_counts()
     
     # (optioneel) ruis filteren
-    station_counts = station_counts[station_counts >= 5]
+    station_counts = station_counts[station_counts >= 0]
     
     # ── Drukste stations ─────────────────────
     drukste_stations = station_counts.nlargest(10)
