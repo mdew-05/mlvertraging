@@ -33,7 +33,7 @@ for jaar in jaren:
 # 1.3 Alles samenvoegen
 df = pd.concat(dfs, ignore_index=True)
 
-tab1, tab2, tab3 = st.tabs(["Introductie", "Data", "Model"])
+tab1, tab2, tab3, tab4= st.tabs(["Introductie", "Data", "Model", "Evaluatie Model"])
 with tab1:
     st.title("Introductie")
     st.write("Probleem -> vertraging")
@@ -146,3 +146,6 @@ with tab3:
     if st.button("🔮 Voorspel vertraging"):
         prediction = model.predict(df)[0]
         st.success(f"⏱️ Verwachte vertraging: **{prediction:.1f} minuten** ± **{mae:.1f}**")
+
+with tab4:
+    st.titel("Evaluatie van model")
