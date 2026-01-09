@@ -69,7 +69,7 @@ with tab3:
     max_delay = st.slider(
         "Maximale duur van de vertraging (minuten)",
         min_value=0,    # minimaal 0 minuten
-        max_value=500,  # maximaal 300 minuten, kan je aanpassen
+        max_value=300,  # maximaal 300 minuten, kan je aanpassen
         value=30,      # standaardwaarde
         step=5          # stapgrootte
     )
@@ -169,7 +169,7 @@ with tab4:
     for md in max_delays:
         df_md = df[df['duration_minutes'] <= md]
 
-        if len(df_md) < 100:
+        if len(df_md) < 50:
             mae_scores.append(None)
             rmse_scores.append(None)
             r2_scores.append(None)
