@@ -44,7 +44,7 @@ with tab1:
 with tab2:
     st.title("Data")
     st.write("De data is afkomstig van de rijden de treinen treinstoringen dataset")
-    st.write("Data is opgeschoond en gefilterd")
+    st.write("De data is opgeschoond en gefilterd")
     st.subheader("Duur van de storingen")
     fig, ax = plt.subplots()
     
