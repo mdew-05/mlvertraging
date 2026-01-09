@@ -161,7 +161,7 @@ with tab3:
 
 with tab4:
     st.title("Evaluatie van model")
-    max_delays = range(0, 151, 10)  # van 0 t/m 300 minuten, stap 10
+    max_delays = range(0, 301, 10)  # van 0 t/m 300 minuten, stap 10
 
     mae_scores = []
     rmse_scores = []
@@ -170,13 +170,7 @@ with tab4:
     for md in max_delays:
         df_md = df[df['duration_minutes'] <= md]
     
-        # Te weinig data overslaan
-        if len(df_md) < 100:
-            mae_scores.append(None)
-            rmse_scores.append(None)
-            r2_scores.append(None)
-            continue
-    
+
         y = df_md['duration_minutes']
         X = df_md[[
             'ns_lines',
