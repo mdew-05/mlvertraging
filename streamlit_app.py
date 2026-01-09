@@ -51,9 +51,9 @@ with tab2:
         bins=50
     )
     
-    ax.set_xlabel("Delay (minutes)")
-    ax.set_ylabel("Count")
-    ax.set_title("Distribution of delays (< 300 minutes)")
+    ax.set_xlabel("Vertraging (minuten)")
+    ax.set_ylabel("Aantal storingen")
+    ax.set_title("Verdeling van storingen (< 300 minutes)")
     
     st.pyplot(fig)
     
