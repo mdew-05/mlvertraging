@@ -139,7 +139,7 @@ with tab3:
     r2 = r2_score(y_test, y_pred)
     st.write(f"Model MAE op testset: {mae:.1f} minuten")
     st.write(f"Model RMSE op testset: {rmse:.1f} minuten")
-    st.write(f"Model R2 op testset: {r2}")
+    st.write(f"Model R2 op testset: {r2:.2f}")
     
     if st.button("🔮 Voorspel vertraging"):
         # Maak een klein dataframe met alleen de geselecteerde input
