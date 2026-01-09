@@ -33,7 +33,6 @@ for jaar in jaren:
 # 1.3 Alles samenvoegen
 df = pd.concat(dfs, ignore_index=True)
 
-
 tab1, tab2, tab3, tab4= st.tabs(["Introductie", "Data", "Model", "Evaluatie Model"])
 with tab1:
     st.title("Introductie")
@@ -62,6 +61,8 @@ with tab3:
     st.title("🚆 Vertraging voorspeller")
     st.write("Vul de reiscontext in en krijg een voorspelling van de vertraging.")
     
+
+    
     # 2. Inputvelden
     
     # Slider voor maximale duur
@@ -72,6 +73,11 @@ with tab3:
         value=30,      # standaardwaarde
         step=5          # stapgrootte
     )
+    
+    # Filter dataframe
+    df = df[df['duration_minutes'] <= max_delay]
+    df = df.sort_values("rdt_lines")
+    
     
     rdt_line = st.selectbox(
         "Traject",
@@ -91,15 +97,9 @@ with tab3:
     time = st.time_input("Starttijd van de reis")
     start_datetime = datetime.combine(date, time)
 
-    df_md = df.copy()
-        # Filter dataframe
-    df = df[df['duration_minutes'] <= max_delay]
-    df = df.sort_values("rdt_lines")
-
     # 4. Features & target
-    
     y = df['duration_minutes']
-
+    
     X = df[[
         'ns_lines',
         'rdt_lines',
@@ -160,14 +160,14 @@ with tab3:
 
 with tab4:
     st.title("Evaluatie van model")
-    max_delays = range(0, 301, 10)  # van 0 t/m 300 minuten, stap 10
+    max_delays = range(0, max_delay, 10)  # van 0 t/m 300 minuten, stap 10
 
     mae_scores = []
     rmse_scores = []
     r2_scores = []
 
     for md in max_delays:
-        df_loop = df_md[df_md['duration_minutes'] <= md].copy() 
+        df_md = df[df['duration_minutes'] <= md]
 
         if len(df_md) < 100:
             mae_scores.append(None)
