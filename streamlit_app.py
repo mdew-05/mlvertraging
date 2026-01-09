@@ -249,4 +249,16 @@ with tab4:
         st.write("Zwolle naar emmen om 2:00")
         image4 = Image.open("zwolle naar emmen om 2.png")
         st.image(image4)
+        
+    st.subheader("Doordeweeks vs weekend testen")
+    col5, col6 = st.columns(2)
+
+    with col5: 
+        st.write("Deventer naar zutphen op vrijdag")
+        image5 = Image.open("deventer naar zutphen doordeweeks.png")
+        st.image(image5)
+    with col4: 
+        st.write("Deventer naar zutphen op zondag")
+        image6 = Image.open("deventer naar zutphen weekend.png")
+        st.image(image6)
 
