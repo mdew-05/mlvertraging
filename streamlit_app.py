@@ -257,7 +257,7 @@ with tab4:
         st.write("Deventer naar zutphen op vrijdag")
         image5 = Image.open("deventer naar zutphen doordeweeks.png")
         st.image(image5)
-    with col4: 
+    with col6: 
         st.write("Deventer naar zutphen op zondag")
         image6 = Image.open("deventer naar zutphen weekend.png")
         st.image(image6)
