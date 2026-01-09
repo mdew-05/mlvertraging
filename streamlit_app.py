@@ -58,7 +58,7 @@ with tab3:
     # Filter dataframe
     df = df[df['duration_minutes'] <= max_delay]
     st.write(f"Maximale vertaging = {max_delay} minuten.")
-    
+    df = df.sort_values("rdt_lines")
     
     
     rdt_line = st.selectbox(
