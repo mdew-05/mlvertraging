@@ -34,7 +34,7 @@ for jaar in jaren:
 # 1.3 Alles samenvoegen
 df = pd.concat(dfs, ignore_index=True)
 
-tab1, tab2, tab3, tab4= st.tabs(["Introductie", "Datavisualisatie", "Model", "Evaluatie Model"])
+tab1, tab2, tab3, tab4, tab5 = st.tabs(["Introductie", "Datavisualisatie", "Model", "Evaluatie Model", "Bronnenlijst"])
 with tab1:
     st.title("Introductie")
     st.write("Veelvoorkomend en vervelend probleem -> vertraging")
@@ -284,4 +284,5 @@ with tab4:
         st.write("Deventer naar zutphen op zondag")
         image6 = Image.open("deventer naar zutphen weekend.png")
         st.image(image6)
-
+with tab5:
+    st.write("Nederlandse Spoorwegen. (2025, 18 december). Terugblik op 2025: reiziger is vaker op tijd, slechte conditie spoor zorgelijk. Terugblik op 2025: Reiziger Is Vaker op Tijd, Slechte Conditie Spoor Zorgelijk. https://nieuws.ns.nl/terugblik-op-2025-reiziger-is-vaker-op-tijd-slechte-conditie-spoor-zorgelijk/")
