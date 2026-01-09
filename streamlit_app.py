@@ -142,11 +142,23 @@ with tab3:
     st.write(f"Model RMSE op testset: {rmse:.1f} minuten")
     st.write(f"Model R2 op testset: {r2}")
     
-    # 8. Predict knop
     if st.button("🔮 Voorspel vertraging"):
-        prediction = model.predict(df)[0]
+        # Maak een klein dataframe met alleen de geselecteerde input
+        input_df = pd.DataFrame([{
+            'ns_lines': df[df['rdt_lines'] == rdt_line]['ns_lines'].iloc[0],
+            'rdt_lines': rdt_line,
+            'begin_station': begin_station,
+            'end_station': end_station,
+            'cause_group': df['cause_group'].mode()[0],  # voorbeeld, kan default zijn
+            'cause_nl': df['cause_nl'].mode()[0],       # voorbeeld, kan default zijn
+            'start_hour': start_datetime.hour,
+            'start_dayofweek': start_datetime.weekday(),
+            'start_month': start_datetime.month
+        }])
+    
+        prediction = model.predict(input_df)[0]
         st.success(f"⏱️ Verwachte vertraging: **{prediction:.1f} minuten** ± **{mae:.1f}**")
-"""
+
 with tab4:
     st.title("Evaluatie van model")
     max_delays = range(0, 301, 10)  # van 0 t/m 300 minuten, stap 10
@@ -204,4 +216,3 @@ with tab4:
     ax2.legend(loc="upper right")
     
     st.pyplot(fig)
-"""
