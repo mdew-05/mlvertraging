@@ -10,7 +10,7 @@ from sklearn.metrics import mean_absolute_error, root_mean_squared_error, r2_sco
 tab1, tab2, tab3 = st.tabs(["Introductie", "Data", "Model"])
 with tab1:
     st.title("Introductie")
-    
+    st.write("Probleem: vertraging")
 
 with tab2:
     st.title("Data")
