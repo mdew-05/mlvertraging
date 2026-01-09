@@ -37,7 +37,7 @@ df = pd.concat(dfs, ignore_index=True)
 tab1, tab2, tab3, tab4= st.tabs(["Introductie", "Data", "Model", "Evaluatie Model"])
 with tab1:
     st.title("Introductie")
-    st.write("Probleem -> vertraging")
+    st.write("Veelvoorkomend en vervelend probleem -> vertraging")
     st.write("Ongeveer 10% van reizigers meer dan 5 minuten (Times, 2025)")
     st.write("Oplossing -> Machine learning model")
     st.write("Hypothese: Op drukkere plekken is de vertraging hoger")
