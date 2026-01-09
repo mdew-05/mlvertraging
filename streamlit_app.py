@@ -209,4 +209,13 @@ with tab4:
     ax1.plot(max_delays, mae_scores, label="MAE (minuten)", marker='o')
     ax1.plot(max_delays, rmse_scores, label="RMSE (minuten)", marker='o')
     ax1.set_xlabel("Maximale vertraging (minuten)")
-    ax1.se
+    ax1.set_ylabel("Fout (minuten)")
+    ax1.legend(loc="upper left")
+    ax1.grid(True)
+
+    ax2 = ax1.twinx()
+    ax2.plot(max_delays, r2_scores, label="R²", color='green', marker='x')
+    ax2.set_ylabel("R²")
+    ax2.legend(loc="upper right")
+
+    st.pyplot(fig)
