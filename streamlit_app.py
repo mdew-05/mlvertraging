@@ -61,8 +61,6 @@ with tab3:
     st.title("🚆 Vertraging voorspeller")
     st.write("Vul de reiscontext in en krijg een voorspelling van de vertraging.")
     
-
-    
     # 2. Inputvelden
     
     # Slider voor maximale duur
@@ -74,7 +72,6 @@ with tab3:
         step=5          # stapgrootte
     )
     
-
     rdt_line = st.selectbox(
         "Traject",
         options=df['rdt_lines'].dropna().unique()
@@ -93,16 +90,17 @@ with tab3:
     time = st.time_input("Starttijd van de reis")
     start_datetime = datetime.combine(date, time)
 
-    # 4. Features & target
-    y = df['duration_minutes']
-
+  
+    
     df_md = df.copy()
         # Filter dataframe
     df = df[df['duration_minutes'] <= max_delay]
     df = df.sort_values("rdt_lines")
+
+    # 4. Features & target
     
-    
-    
+    y = df['duration_minutes']
+
     X = df[[
         'ns_lines',
         'rdt_lines',
