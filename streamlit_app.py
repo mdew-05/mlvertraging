@@ -71,7 +71,6 @@ with tab3:
     
     begin_station = st.selectbox("Beginstation", options=stations_line)
     
-    # Eindstations: alle stations behalve beginstation
     end_stations = [s for s in stations_line if s != begin_station]
     end_station = st.selectbox("Eindstation", options=end_stations)
     
@@ -80,24 +79,6 @@ with tab3:
     time = st.time_input("Starttijd van de reis")
     start_datetime = datetime.combine(date, time)
 
-    """
-    # Kies meest voorkomende ns_line, cause_group, cause_nl als default
-    ns_line = df['ns_lines'].mode()[0]
-    cause_group = df['cause_group'].mode()[0]
-    cause_nl = df['cause_nl'].mode()[0]
-    
-    input_df = pd.DataFrame([{
-        'ns_lines': ns_line,
-        'rdt_lines': rdt_line,
-        'begin_station': begin_station,
-        'end_station': end_station,
-        'cause_group': cause_group,
-        'cause_nl': cause_nl,
-        'start_hour': start_datetime.hour,
-        'start_dayofweek': start_datetime.weekday(),
-        'start_month': start_datetime.month
-    }])
-    """
     # 4. Features & target
     y = df['duration_minutes']
     
