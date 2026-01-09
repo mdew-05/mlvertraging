@@ -146,7 +146,7 @@ with tab3:
     if st.button("🔮 Voorspel vertraging"):
         prediction = model.predict(df)[0]
         st.success(f"⏱️ Verwachte vertraging: **{prediction:.1f} minuten** ± **{mae:.1f}**")
-
+"""
 with tab4:
     st.title("Evaluatie van model")
     max_delays = range(0, 301, 10)  # van 0 t/m 300 minuten, stap 10
