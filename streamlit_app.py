@@ -237,4 +237,14 @@ with tab4:
         st.write("Breukelen naar Maarssen (Rustigere stations)")
         image2 = Image.open("breukelen naar maarssen.png")
         st.image(image2, caption = "Breukelen naar Maarssen")
+    col3, col4 = st.columns(2)
+    st.subheader("Spits vs buiten spits testen")
+    with col3: 
+        st.write("Zwolle naar emmen om 17:00")
+        image3 = Image.open("zwolle naar emmen om 17")
+        st.image(image3, caption = "Zwolle naar emmen om 17")
+    with col4: 
+        st.write("Zwolle naar emmen om 2:00")
+        image4 = Image.open("zwolle naar emmen om 2")
+        st.image(image4, caption = "Zwolle naar emmen om 2")
 
