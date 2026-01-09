@@ -58,6 +58,24 @@ with tab2:
     
     st.pyplot(fig)
     
+    st.subheader("Aantal storingen per uur van de dag")
+
+    fig2, ax2 = plt.subplots()
+
+    storingen_per_uur = (
+        df["start_hour"]
+        .value_counts()
+        .sort_index()
+    )
+
+    ax2.bar(storingen_per_uur.index, storingen_per_uur.values)
+    ax2.set_xlabel("Uur van de dag")
+    ax2.set_ylabel("Aantal storingen")
+    ax2.set_title("Drukste uren (storingen per start_hour)")
+    ax2.set_xticks(range(0, 24))
+
+    st.pyplot(fig2)
+    
 with tab3: 
     st.title("🚆 Vertraging voorspeller")
     st.write("Vul de reiscontext in en krijg een voorspelling van de vertraging.")
