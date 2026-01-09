@@ -73,7 +73,7 @@ with tab2:
     ax2.set_ylabel("Aantal storingen")
     ax2.set_title("Drukste uren (storingen per start_hour)")
     ax2.set_xticks(range(0, 24))
-
+    ax2.set_xticklabels(range(0, 24), rotation=45)
     st.pyplot(fig2)
     
 with tab3: 
