@@ -9,29 +9,29 @@ from sklearn.pipeline import Pipeline
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error, root_mean_squared_error, r2_score
 
-    # 1. Data inlezen
-    jaren = ["24", "25"]
-    
-    dfs = [] 
-    
-    for jaar in jaren:
-        df = pd.read_csv(f"disruptions-20{jaar}.csv")
-    
-        # 1.1 Opschonen
-        df = df.dropna(subset=['duration_minutes'])
-    
-        # 1.2 Tijdfeatures en stations maken
-        df['start_time'] = pd.to_datetime(df['start_time'])
-        df['start_hour'] = df['start_time'].dt.hour
-        df['start_dayofweek'] = df['start_time'].dt.dayofweek
-        df['start_month'] = df['start_time'].dt.month
-        df['year'] = df['start_time'].dt.year
-        df['begin_station'] = df['rdt_station_names'].str.split(',').str[0]
-        df['end_station'] = df['rdt_station_names'].str.split(',').str[-1]
-        dfs.append(df)
-    
-    # 1.3 Alles samenvoegen
-    df = pd.concat(dfs, ignore_index=True)
+# 1. Data inlezen
+jaren = ["24", "25"]
+
+dfs = [] 
+
+for jaar in jaren:
+    df = pd.read_csv(f"disruptions-20{jaar}.csv")
+
+    # 1.1 Opschonen
+    df = df.dropna(subset=['duration_minutes'])
+
+    # 1.2 Tijdfeatures en stations maken
+    df['start_time'] = pd.to_datetime(df['start_time'])
+    df['start_hour'] = df['start_time'].dt.hour
+    df['start_dayofweek'] = df['start_time'].dt.dayofweek
+    df['start_month'] = df['start_time'].dt.month
+    df['year'] = df['start_time'].dt.year
+    df['begin_station'] = df['rdt_station_names'].str.split(',').str[0]
+    df['end_station'] = df['rdt_station_names'].str.split(',').str[-1]
+    dfs.append(df)
+
+# 1.3 Alles samenvoegen
+df = pd.concat(dfs, ignore_index=True)
 
 tab1, tab2, tab3 = st.tabs(["Introductie", "Data", "Model"])
 with tab1:
