@@ -130,7 +130,7 @@ mse = mean_squared_error(y_test, y_pred)
 r2 = r2_score(y_test, y_pred)
 st.write(f"Model MAE op testset: {mae:.1f} minuten")
 st.write(f"Model MSE op testset: {mse:.1f} minuten")
-st.write(f"Model R2 op testset: {r2:.1f}")
+st.write(f"Model R2 op testset: {r2}")
 
 # 8. Predict knop
 if st.button("🔮 Voorspel vertraging"):
