@@ -39,10 +39,12 @@ with tab1:
     st.write("Probleem -> vertraging")
     st.write("Ongeveer 10% van reizigers meer dan 5 minuten (Times, 2025)")
     st.write("Oplossing -> Machine learning model")
+    
 with tab2:
     st.title("Data")
     st.write("De data is afkomstig van de rijden de treinen treinstoringen dataset")
-    plt.hist(df[df["duration_minutes"] < 300])
+    plt.hist(df["duration_minutes"][df["duration_minutes"] < 300])
+    
 with tab3: 
     st.title("🚆 Vertraging voorspeller")
     st.write("Vul de reiscontext in en krijg een voorspelling van de vertraging.")
