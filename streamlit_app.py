@@ -238,7 +238,7 @@ with tab4:
         image2 = Image.open("breukelen naar maarssen.png")
         st.image(image2)
 
-    st.subheader("Spits vs buiten spits testen")
+    st.subheader("Spits vs buiten spits")
     col3, col4 = st.columns(2)
 
     with col3: 
@@ -250,7 +250,7 @@ with tab4:
         image4 = Image.open("zwolle naar emmen om 2.png")
         st.image(image4)
         
-    st.subheader("Doordeweeks vs weekend testen")
+    st.subheader("Doordeweeks vs weekend")
     col5, col6 = st.columns(2)
 
     with col5: 
