@@ -75,6 +75,26 @@ with tab2:
     ax2.set_xticks(range(0, 24))
     ax2.set_xticklabels(range(0, 24))
     st.pyplot(fig2)
+
+    st.subheader("Drukste stations (meeste storingen)")
+
+    fig3, ax3 = plt.subplots()
+    
+    drukste_stations = (
+        df["begin_station"]
+        .value_counts()
+        .head(10)
+    )
+    
+    ax3.barh(drukste_stations.index, drukste_stations.values)
+    ax3.set_xlabel("Aantal storingen")
+    ax3.set_ylabel("Station")
+    ax3.set_title("Top 10 drukste stations")
+    
+    # Grootste bovenaan
+    ax3.invert_yaxis()
+    
+    st.pyplot(fig3)
     
 with tab3: 
     st.title("🚆 Vertraging voorspeller")
