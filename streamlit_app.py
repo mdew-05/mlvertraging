@@ -241,10 +241,10 @@ with tab4:
     st.subheader("Spits vs buiten spits testen")
     with col3: 
         st.write("Zwolle naar emmen om 17:00")
-        image3 = Image.open("zwolle naar emmen om 17")
+        image3 = Image.open("zwolle naar emmen om 17.png")
         st.image(image3, caption = "Zwolle naar emmen om 17")
     with col4: 
         st.write("Zwolle naar emmen om 2:00")
-        image4 = Image.open("zwolle naar emmen om 2")
+        image4 = Image.open("zwolle naar emmen om 2.png")
         st.image(image4, caption = "Zwolle naar emmen om 2")
 
