@@ -34,7 +34,7 @@ for jaar in jaren:
 # 1.3 Alles samenvoegen
 df = pd.concat(dfs, ignore_index=True)
 
-tab1, tab2, tab3, tab4= st.tabs(["Introductie", "Data", "Model", "Evaluatie Model"])
+tab1, tab2, tab3, tab4= st.tabs(["Introductie", "Datavisualisatie", "Model", "Evaluatie Model"])
 with tab1:
     st.title("Introductie")
     st.write("Veelvoorkomend en vervelend probleem -> vertraging")
@@ -42,7 +42,7 @@ with tab1:
     st.write("Oplossing -> Machine learning model")
     st.write("Hypothese: Op drukkere plekken is de vertraging hoger")
 with tab2:
-    st.title("Data")
+    st.title("Datavisualisatie")
     st.write("De data is afkomstig van de rijden de treinen treinstoringen dataset")
     st.write("De data is opgeschoond en gefilterd")
     st.subheader("Duur van de storingen")
