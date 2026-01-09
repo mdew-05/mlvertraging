@@ -6,7 +6,7 @@ from sklearn.preprocessing import OneHotEncoder
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.ensemble import RandomForestRegressor
-from sklearn.metrics import mean_absolute_error
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 
 st.title("🚆 Vertraging voorspeller")
 st.write("Vul de reiscontext in en krijg een voorspelling van de vertraging.")
@@ -126,7 +126,11 @@ model.fit(X_train, y_train)
 
 y_pred = model.predict(X_test)
 mae = mean_absolute_error(y_test, y_pred)
+mse = mean_squared_error(y_test, y_pred)
+r2 = r2_score(y_test, y_pred)
 st.write(f"Model MAE op testset: {mae:.1f} minuten")
+st.write(f"Model MSE op testset: {mse:.1f} minuten")
+st.write(f"Model R2 op testset: {r2:.1f})
 
 # 8. Predict knop
 if st.button("🔮 Voorspel vertraging"):
