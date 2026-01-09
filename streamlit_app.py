@@ -98,26 +98,6 @@ with tab2:
     
     st.pyplot(fig5)
 
-    st.subheader("Minst drukke trajecten (minste storingen)")
-    
-    # Aantal storingen per traject
-    traject_counts = df["rdt_lines"].value_counts()
-    
-    # (optioneel) filter ruis
-    traject_counts = traject_counts[traject_counts >= 5]  # minimaal 5 storingen
-    
-    # Top 10 minst drukke trajecten
-    minst_drukke_trajecten = traject_counts.nsmallest(10).sort_values()
-    
-    # Plot
-    fig6, ax6 = plt.subplots(figsize=(8, 5))
-    ax6.barh(minst_drukke_trajecten.index, minst_drukke_trajecten.values)
-    ax6.set_xlabel("Aantal storingen")
-    ax6.set_ylabel("Traject")
-    ax6.set_title("Top 10 minst drukke trajecten")
-    
-    st.pyplot(fig6)
-
     st.subheader("Drukste stations (meeste storingen)")
     
     # Begin + eindstation combineren en tellen
