@@ -95,7 +95,26 @@ with tab2:
     ax3.invert_yaxis()
     
     st.pyplot(fig3)
+
+    st.subheader("Minst drukke stations (minste storingen)")
     
+    fig4, ax4 = plt.subplots()
+    
+    station_counts = df["begin_station"].value_counts()
+    
+    # Alleen stations met minstens 10 storingen
+    station_counts = station_counts[station_counts >= 10]
+    
+    minst_drukke_stations = station_counts.nsmallest(10)
+
+    
+    ax4.barh(minst_drukke_stations.index, minst_drukke_stations.values)
+    ax4.set_xlabel("Aantal storingen")
+    ax4.set_ylabel("Station")
+    ax4.set_title("Top 10 minst drukke stations")
+    
+    st.pyplot(fig4)
+        
 with tab3: 
     st.title("🚆 Vertraging voorspeller")
     st.write("Vul de reiscontext in en krijg een voorspelling van de vertraging.")
