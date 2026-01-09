@@ -33,6 +33,7 @@ for jaar in jaren:
 # 1.3 Alles samenvoegen
 df = pd.concat(dfs, ignore_index=True)
 
+
 tab1, tab2, tab3, tab4= st.tabs(["Introductie", "Data", "Model", "Evaluatie Model"])
 with tab1:
     st.title("Introductie")
@@ -90,8 +91,6 @@ with tab3:
     time = st.time_input("Starttijd van de reis")
     start_datetime = datetime.combine(date, time)
 
-  
-    
     df_md = df.copy()
         # Filter dataframe
     df = df[df['duration_minutes'] <= max_delay]
@@ -161,7 +160,7 @@ with tab3:
 
 with tab4:
     st.title("Evaluatie van model")
-    max_delays = range(0, max_delay, 10)  # van 0 t/m 300 minuten, stap 10
+    max_delays = range(0, 301, 10)  # van 0 t/m 300 minuten, stap 10
 
     mae_scores = []
     rmse_scores = []
