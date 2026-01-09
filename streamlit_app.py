@@ -232,11 +232,11 @@ with tab4:
     with col1: 
         st.write("Schiphol airport naar Utrecht cen. (Drukke stations)")
         image1 = Image.open("schiphol naar utrecht.png")
-        st.image(image1, caption = "Schiphol Naar Utrecht")
+        st.image(image1)
     with col2: 
         st.write("Breukelen naar Maarssen (Rustigere stations)")
         image2 = Image.open("breukelen naar maarssen.png")
-        st.image(image2, caption = "Breukelen naar Maarssen")
+        st.image(image2)
 
     st.subheader("Spits vs buiten spits testen")
     col3, col4 = st.columns(2)
@@ -244,9 +244,9 @@ with tab4:
     with col3: 
         st.write("Zwolle naar emmen om 17:00")
         image3 = Image.open("zwolle naar emmen om 17.png")
-        st.image(image3, caption = "Zwolle naar emmen om 17")
+        st.image(image3)
     with col4: 
         st.write("Zwolle naar emmen om 2:00")
         image4 = Image.open("zwolle naar emmen om 2.png")
-        st.image(image4, caption = "Zwolle naar emmen om 2")
+        st.image(image4)
 
