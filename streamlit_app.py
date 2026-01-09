@@ -38,7 +38,7 @@ tab1, tab2, tab3, tab4= st.tabs(["Introductie", "Data", "Model", "Evaluatie Mode
 with tab1:
     st.title("Introductie")
     st.write("Veelvoorkomend en vervelend probleem -> vertraging")
-    st.write("Ongeveer 10% van reizigers meer dan 5 minuten (Times, 2025)")
+    st.write("Ongeveer 10% van reizigers meer dan 5 minuten (Nederlandse Spoorwegen, 2025)")
     st.write("Oplossing -> Machine learning model")
     st.write("Hypothese: Op drukkere plekken is de vertraging hoger")
 with tab2:
