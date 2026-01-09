@@ -15,7 +15,7 @@ with tab1:
     st.write("Oplossing -> Machine learning model")
 with tab2:
     st.title("Data")
-
+    st.write("De data is afkomstig van de reiden de treinen treinstoringen dataset")
     
 with tab3: 
     st.title("🚆 Vertraging voorspeller")
