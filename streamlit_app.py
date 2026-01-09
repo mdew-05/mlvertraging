@@ -41,6 +41,7 @@ with tab1:
     st.write("Ongeveer 10% van reizigers meer dan 5 minuten (Nederlandse Spoorwegen, 2025)")
     st.write("Oplossing -> Machine learning model")
     st.write("Hypothese: Op drukkere plekken is de vertraging hoger")
+    st.subheader("Praktische toepassingen")
 with tab2:
     st.title("Datavisualisatie")
     st.write("De data is afkomstig van de rijden de treinen treinstoringen dataset")
