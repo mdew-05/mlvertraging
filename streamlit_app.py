@@ -74,11 +74,7 @@ with tab3:
         step=5          # stapgrootte
     )
     
-    # Filter dataframe
-    df = df[df['duration_minutes'] <= max_delay]
-    df = df.sort_values("rdt_lines")
-    
-    
+
     rdt_line = st.selectbox(
         "Traject",
         options=df['rdt_lines'].dropna().unique()
@@ -99,6 +95,13 @@ with tab3:
 
     # 4. Features & target
     y = df['duration_minutes']
+
+    df_md = df.copy()
+        # Filter dataframe
+    df = df[df['duration_minutes'] <= max_delay]
+    df = df.sort_values("rdt_lines")
+    
+    
     
     X = df[[
         'ns_lines',
@@ -167,7 +170,7 @@ with tab4:
     r2_scores = []
 
     for md in max_delays:
-        df_md = df[df['duration_minutes'] <= md]
+        df_md = df_md[df_md['duration_minutes'] <= md]
 
         if len(df_md) < 100:
             mae_scores.append(None)
