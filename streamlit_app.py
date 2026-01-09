@@ -167,7 +167,7 @@ with tab4:
     r2_scores = []
 
     for md in max_delays:
-        df_md = df_md[df_md['duration_minutes'] <= md]
+        df_loop = df_md[df_md['duration_minutes'] <= md].copy() 
 
         if len(df_md) < 100:
             mae_scores.append(None)
