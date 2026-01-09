@@ -226,3 +226,8 @@ with tab4:
     image = Image.open("metrics ml.png")
     st.image(image, caption="Metrics van het model", use_column_width=True)
     st.subheader("Hypothese testen")
+    col1, col2 = st.columns(2)
+    with col1: 
+        st.write("Schiphol airport naar Utrecht cen. (Drukke stations)")
+        image1 = Image.open("schiphol naar utrecht.png")
+        st.image(image1, caption = "Schiphol Naar Utrecht")
