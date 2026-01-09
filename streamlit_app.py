@@ -127,7 +127,7 @@ with tab3:
     # 6. Model
     model = Pipeline([
         ('preprocessor', preprocessor),
-        ('regressor', RandomForestRegressor(n_estimators=200, random_state=42, n_jobs=-1))
+        ('regressor', RandomForestRegressor(n_estimators=50, random_state=42, n_jobs=-1))
     ])
     
     # 7. Train / test split & evaluatie
