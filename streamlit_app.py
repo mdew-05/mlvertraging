@@ -231,3 +231,8 @@ with tab4:
         st.write("Schiphol airport naar Utrecht cen. (Drukke stations)")
         image1 = Image.open("schiphol naar utrecht.png")
         st.image(image1, caption = "Schiphol Naar Utrecht")
+    with col2: 
+        st.write("Breukelen naar Maarssen (Rustigere stations)")
+        image2 = Image.open("breukelen naar maarssen.png")
+        st.image(image2, caption = "Breukelen naar Maarssen")
+
