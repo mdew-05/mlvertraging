@@ -139,7 +139,7 @@ with tab3:
     r2 = r2_score(y_test, y_pred)
     st.write(f"Model MAE op testset: {mae:.1f} minuten")
     st.write(f"Model RMSE op testset: {rmse:.1f} minuten")
-    st.write(f"Model R2 op testset: {r2:.2f}")
+    st.write(f"Model R2 op testset: {r2}")
     
     if st.button("🔮 Voorspel vertraging"):
         # Maak een klein dataframe met alleen de geselecteerde input
@@ -157,65 +157,60 @@ with tab3:
     
         prediction = model.predict(input_df)[0]
         st.success(f"⏱️ Verwachte vertraging: **{prediction:.1f} minuten** ± **{mae:.1f}**")
-        
+
 with tab4:
     st.title("Evaluatie van model")
+    max_delays = range(0, 151, 10)  # van 0 t/m 300 minuten, stap 10
 
-    # Controleer of we de evaluatie al hebben gedaan en in session_state staan
-    if 'tab4_results' not in st.session_state:
-        # Berekeningen uitvoeren
-        max_delays = range(0, 301, 10)
-        mae_scores, rmse_scores, r2_scores = [], [], []
+    mae_scores = []
+    rmse_scores = []
+    r2_scores = []
 
-        for md in max_delays:
-            df_md = df[df['duration_minutes'] <= md]
+    for md in max_delays:
+        df_md = df[df['duration_minutes'] <= md]
 
-            if len(df_md) < 50:
-                mae_scores.append(None)
-                rmse_scores.append(None)
-                r2_scores.append(None)
-                continue
+        if len(df_md) < 100:
+            mae_scores.append(None)
+            rmse_scores.append(None)
+            r2_scores.append(None)
+            continue
 
-            y_md = df_md['duration_minutes']
-            X_md = df_md[[
-                'ns_lines', 'rdt_lines', 'begin_station', 'end_station',
-                'cause_group', 'cause_nl', 'start_hour', 'start_dayofweek', 'start_month'
-            ]]
-
-            X_train_md, X_test_md, y_train_md, y_test_md = train_test_split(
-                X_md, y_md, test_size=0.2, random_state=42
-            )
-
-            # Maak tijdelijk een nieuw model om te trainen
-            temp_model = Pipeline([
-                ('preprocessor', preprocessor),
-                ('regressor', RandomForestRegressor(n_estimators=50, random_state=42, n_jobs=-1))
-            ])
-            temp_model.fit(X_train_md, y_train_md)
-            y_pred_md = temp_model.predict(X_test_md)
-
-            mae_scores.append(mean_absolute_error(y_test_md, y_pred_md))
-            rmse_scores.append(root_mean_squared_error(y_test_md, y_pred_md))
-            r2_scores.append(r2_score(y_test_md, y_pred_md))
-
-        # Sla de resultaten op in session_state
-        st.session_state['tab4_results'] = (max_delays, mae_scores, rmse_scores, r2_scores)
-
-    # Haal de resultaten op
-    max_delays, mae_scores, rmse_scores, r2_scores = st.session_state['tab4_results']
-
-    # Plotten
+        y = df_md['duration_minutes']
+        X = df_md[[
+            'ns_lines',
+            'rdt_lines',
+            'begin_station',
+            'end_station',
+            'cause_group',
+            'cause_nl',
+            'start_hour',
+            'start_dayofweek',
+            'start_month'
+        ]]
+    
+        X_train, X_test, y_train, y_test = train_test_split(
+            X, y, test_size=0.2, random_state=42
+        )
+    
+        model.fit(X_train, y_train)
+        y_pred = model.predict(X_test)
+    
+        mae_scores.append(mean_absolute_error(y_test, y_pred))
+        rmse_scores.append(root_mean_squared_error(y_test, y_pred))
+        r2_scores.append(r2_score(y_test, y_pred))
+    
     fig, ax1 = plt.subplots(figsize=(10, 6))
+    
     ax1.plot(max_delays, mae_scores, label="MAE (minuten)", marker='o')
     ax1.plot(max_delays, rmse_scores, label="RMSE (minuten)", marker='o')
     ax1.set_xlabel("Maximale vertraging (minuten)")
     ax1.set_ylabel("Fout (minuten)")
     ax1.legend(loc="upper left")
     ax1.grid(True)
-
+    
     ax2 = ax1.twinx()
     ax2.plot(max_delays, r2_scores, label="R²", color='green', marker='x')
     ax2.set_ylabel("R²")
     ax2.legend(loc="upper right")
-
+    
     st.pyplot(fig)
