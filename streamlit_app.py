@@ -10,8 +10,9 @@ from sklearn.metrics import mean_absolute_error, root_mean_squared_error, r2_sco
 tab1, tab2, tab3 = st.tabs(["Introductie", "Data", "Model"])
 with tab1:
     st.title("Introductie")
-    st.write("Probleem: vertraging")
-
+    st.write("Probleem -> vertraging")
+    st.write("Ongeveer 10% meer dan 5 minuten (Times, 2025)")
+    st.write("Oplossing -> Machine learning model")
 with tab2:
     st.title("Data")
 
