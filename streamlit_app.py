@@ -170,7 +170,7 @@ with tab4:
         for md in max_delays:
             df_md = df[df['duration_minutes'] <= md]
 
-            if len(df_md) < 100:
+            if len(df_md) < 50:
                 mae_scores.append(None)
                 rmse_scores.append(None)
                 r2_scores.append(None)
