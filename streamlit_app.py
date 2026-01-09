@@ -44,80 +44,90 @@ with tab1:
 with tab2:
     st.title("Data")
     st.write("De data is afkomstig van de rijden de treinen treinstoringen dataset")
-    st.subheader("Duur van de storingen")
-    fig, ax = plt.subplots()
-    
-    ax.hist(
-        df.loc[df["duration_minutes"] < 500, "duration_minutes"],
-        bins=50
-    )
-    ax.set_xlim(left=0)
-    ax.set_xlabel("Vertraging (minuten)")
-    ax.set_ylabel("Aantal storingen")
-    ax.set_title("Verdeling van storingen (< 500 minuten)")
-    
-    st.pyplot(fig)
-    
-    st.subheader("Aantal storingen per uur van de dag")
 
-    fig2, ax2 = plt.subplots()
+    # ── Rij 1 ─────────────────────────────────────────────
+    col1, col2 = st.columns(2)
 
-    storingen_per_uur = (
-        df["start_hour"]
-        .value_counts()
-        .sort_index()
-    )
+    # 1️⃣ Duur van de storingen
+    with col1:
+        st.subheader("Duur van de storingen")
 
-    ax2.bar(storingen_per_uur.index, storingen_per_uur.values)
-    ax2.set_xlabel("Uur van de dag")
-    ax2.set_ylabel("Aantal storingen")
-    ax2.set_title("Drukste uren (storingen per start_hour)")
-    ax2.set_xticks(range(0, 24))
-    ax2.set_xticklabels(range(0, 24))
-    st.pyplot(fig2)
+        fig, ax = plt.subplots(figsize=(6, 4))
+        ax.hist(
+            df.loc[df["duration_minutes"] < 500, "duration_minutes"],
+            bins=50
+        )
+        ax.set_xlim(left=0)
+        ax.set_xlabel("Vertraging (minuten)")
+        ax.set_ylabel("Aantal storingen")
+        ax.set_title("Verdeling van storingen (< 500 minuten)")
 
-    st.subheader("Drukste stations (meeste storingen)")
-    
-    # Begin + eindstation combineren en tellen
-    stations = pd.concat([
-        df["begin_station"],
-        df["end_station"]
-    ])
-    
-    station_counts = stations.value_counts()
-    
-    # (optioneel) ruis filteren
-    station_counts = station_counts[station_counts >= 10]
-    
-    # ── Drukste stations ─────────────────────
-    drukste_stations = station_counts.nlargest(10)
-    
-    fig3, ax3 = plt.subplots()
-    ax3.barh(drukste_stations.index, drukste_stations.values)
-    ax3.set_xlabel("Aantal storingen")
-    ax3.set_ylabel("Station")
-    ax3.set_title("Top 10 drukste stations")
-    ax3.invert_yaxis()
-    
-    st.pyplot(fig3)
-    
-    
-    # ── Minst drukke stations ─────────────────
-    st.subheader("Minst drukke stations (minste storingen)")
-    
-    minst_drukke_stations = (
-        station_counts
-        .nsmallest(10)
-        .sort_values()
-    )
-    
-    fig4, ax4 = plt.subplots()
-    ax4.barh(minst_drukke_stations.index, minst_drukke_stations.values)
-    ax4.set_xlabel("Aantal storingen")
-    ax4.set_ylabel("Station")
-    ax4.set_title("Top 10 minst drukke stations")
-    
-    st.pyplot(fig4)
+        st.pyplot(fig)
+
+    # 2️⃣ Aantal storingen per uur
+    with col2:
+        st.subheader("Aantal storingen per uur van de dag")
+
+        fig2, ax2 = plt.subplots(figsize=(6, 4))
+
+        storingen_per_uur = (
+            df["start_hour"]
+            .value_counts()
+            .sort_index()
+        )
+
+        ax2.bar(storingen_per_uur.index, storingen_per_uur.values)
+        ax2.set_xlabel("Uur van de dag")
+        ax2.set_ylabel("Aantal storingen")
+        ax2.set_title("Drukste uren")
+        ax2.set_xticks(range(0, 24))
+        ax2.set_xticklabels(range(0, 24), rotation=45)
+
+        st.pyplot(fig2)
+
+    # ── Rij 2 ─────────────────────────────────────────────
+    col3, col4 = st.columns(2)
+
+    # 3️⃣ Drukste stations
+    with col3:
+        st.subheader("Drukste stations (meeste storingen)")
+
+        stations = pd.concat([
+            df["begin_station"],
+            df["end_station"]
+        ])
+
+        station_counts = stations.value_counts()
+        station_counts = station_counts[station_counts >= 10]
+
+        drukste_stations = station_counts.nlargest(10)
+
+        fig3, ax3 = plt.subplots(figsize=(6, 4))
+        ax3.barh(drukste_stations.index, drukste_stations.values)
+        ax3.set_xlabel("Aantal storingen")
+        ax3.set_ylabel("Station")
+        ax3.set_title("Top 10 drukste stations")
+        ax3.invert_yaxis()
+
+        st.pyplot(fig3)
+
+    # 4️⃣ Minst drukke stations
+    with col4:
+        st.subheader("Minst drukke stations (minste storingen)")
+
+        minst_drukke_stations = (
+            station_counts
+            .nsmallest(10)
+            .sort_values()
+        )
+
+        fig4, ax4 = plt.subplots(figsize=(6, 4))
+        ax4.barh(minst_drukke_stations.index, minst_drukke_stations.values)
+        ax4.set_xlabel("Aantal storingen")
+        ax4.set_ylabel("Station")
+        ax4.set_title("Top 10 minst drukke stations")
+
+        st.pyplot(fig4)
 
         
 with tab3: 
