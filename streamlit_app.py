@@ -188,8 +188,8 @@ with tab4:
             ]]
 
             X_train_md, X_test_md, y_train_md, y_test_md = train_test_split(X_md, y_md, test_size=0.2, random_state=42)
-            model_pipeline.fit(X_train_md, y_train_md)
-            y_pred_md = model_pipeline.predict(X_test_md)
+            model.fit(X_train_md, y_train_md)
+            y_pred_md = model.predict(X_test_md)
 
             mae_scores.append(mean_absolute_error(y_test_md, y_pred_md))
             rmse_scores.append(np.sqrt(np.mean((y_test_md - y_pred_md)**2)))
