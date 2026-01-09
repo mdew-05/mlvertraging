@@ -164,7 +164,7 @@ with tab4:
     # Controleer of we de evaluatie al hebben gedaan en in session_state staan
     if 'tab4_results' not in st.session_state:
         # Berekeningen uitvoeren
-        max_delays = range(0, 151, 10)
+        max_delays = range(0, 301, 10)
         mae_scores, rmse_scores, r2_scores = [], [], []
 
         for md in max_delays:
