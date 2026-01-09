@@ -43,7 +43,7 @@ with tab1:
     st.write("Hypothese: Op drukkere plekken is de vertraging hoger")
 with tab2:
     st.title("Data")
-    st.write("De data is afkomstig van de rijden de treinen treinstoringen dataset")
+    st.subheader("De data is afkomstig van de rijden de treinen treinstoringen dataset")
 
     fig, ax = plt.subplots()
     
