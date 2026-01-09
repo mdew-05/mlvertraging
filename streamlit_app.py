@@ -77,15 +77,20 @@ with tab2:
     st.pyplot(fig2)
 
     st.subheader("Drukste stations (meeste storingen)")
-
+    
+    # Begin + eindstation combineren en tellen
     stations = pd.concat([
-    df["begin_station"],
-    df["end_station"]
+        df["begin_station"],
+        df["end_station"]
     ])
     
-    fig3, ax3 = plt.subplots()
+    station_counts = stations.value_counts()
     
-    drukste_stations = stations.nlargest(10)
+    # (optioneel) ruis filteren
+    station_counts = station_counts[station_counts >= 10]
+    
+    # ── Drukste stations ─────────────────────
+    drukste_stations = station_counts.nlargest(10)
     
     fig3, ax3 = plt.subplots()
     ax3.barh(drukste_stations.index, drukste_stations.values)
@@ -95,18 +100,25 @@ with tab2:
     ax3.invert_yaxis()
     
     st.pyplot(fig3)
-
+    
+    
+    # ── Minst drukke stations ─────────────────
     st.subheader("Minst drukke stations (minste storingen)")
     
-    minst_drukke_stations = stations.nsmallest(10).sort_values()
+    minst_drukke_stations = (
+        station_counts
+        .nsmallest(10)
+        .sort_values()
+    )
     
     fig4, ax4 = plt.subplots()
     ax4.barh(minst_drukke_stations.index, minst_drukke_stations.values)
     ax4.set_xlabel("Aantal storingen")
     ax4.set_ylabel("Station")
     ax4.set_title("Top 10 minst drukke stations")
-
+    
     st.pyplot(fig4)
+
         
 with tab3: 
     st.title("🚆 Vertraging voorspeller")
