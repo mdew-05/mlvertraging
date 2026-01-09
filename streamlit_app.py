@@ -85,7 +85,7 @@ with tab2:
     
     fig3, ax3 = plt.subplots()
     
-    drukste_stations = station_counts.nlargest(10)
+    drukste_stations = stations.nlargest(10)
     
     fig3, ax3 = plt.subplots()
     ax3.barh(drukste_stations.index, drukste_stations.values)
@@ -98,7 +98,7 @@ with tab2:
 
     st.subheader("Minst drukke stations (minste storingen)")
     
-    minst_drukke_stations = station_counts.nsmallest(10).sort_values()
+    minst_drukke_stations = stations.nsmallest(10).sort_values()
     
     fig4, ax4 = plt.subplots()
     ax4.barh(minst_drukke_stations.index, minst_drukke_stations.values)
