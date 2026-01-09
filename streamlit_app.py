@@ -100,13 +100,17 @@ with tab2:
     
     fig4, ax4 = plt.subplots()
     
-    station_counts = df["begin_station"].value_counts()
+    stations = pd.concat([
+        df["begin_station"],
+        df["end_station"]
+    ])
+    
+    station_counts = stations.value_counts()
     
     # Alleen stations met minstens 10 storingen
     station_counts = station_counts[station_counts >= 10]
     
     minst_drukke_stations = station_counts.nsmallest(10)
-
     
     ax4.barh(minst_drukke_stations.index, minst_drukke_stations.values)
     ax4.set_xlabel("Aantal storingen")
