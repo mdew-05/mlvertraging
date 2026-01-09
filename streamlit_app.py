@@ -225,3 +225,4 @@ with tab4:
     st.title("Evaluatie van model")
     image = Image.open("metrics ml.png")
     st.image(image, caption="Metrics van het model", use_column_width=True)
+    st.subheader("Hypothese testen")
