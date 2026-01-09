@@ -160,7 +160,7 @@ with tab3:
 
 with tab4:
     st.title("Evaluatie van model")
-    max_delays = range(0, 151, 10)  # van 0 t/m 300 minuten, stap 10
+    max_delays = range(0, max_delay, 10)  # van 0 t/m 300 minuten, stap 10
 
     mae_scores = []
     rmse_scores = []
