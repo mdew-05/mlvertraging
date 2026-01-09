@@ -41,8 +41,8 @@ df = pd.concat(dfs, ignore_index=True)
 max_delay = st.slider(
     "Maximale duur van de vertraging (minuten)",
     min_value=0,    # minimaal 0 minuten
-    max_value=300,  # maximaal 240 minuten, kan je aanpassen
-    value=45,      # standaardwaarde
+    max_value=300,  # maximaal 300 minuten, kan je aanpassen
+    value=30,      # standaardwaarde
     step=5          # stapgrootte
 )
 
