@@ -42,6 +42,8 @@ with tab1:
     st.write("Oplossing -> Machine learning model")
     st.write("Hypothese: Op drukkere plekken is de vertraging hoger")
     st.subheader("Praktische toepassingen")
+    st.write("Realtime vertraging voorspelling: Reizigers krijgen nauwkeurigere aankomsttijden in apps.")
+    st.write("Preventief onderhoud: Waar hogere vertragingen worden voorspeld kan preventief onderhoud gepland worden")
 with tab2:
     st.title("Datavisualisatie")
     st.write("De data is afkomstig van de rijden de treinen treinstoringen dataset")
