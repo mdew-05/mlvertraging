@@ -8,6 +8,7 @@ from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error, root_mean_squared_error, r2_score
+from PIL import Image
 
 # 1. Data inlezen
 jaren = ["24", "25"]
@@ -160,57 +161,5 @@ with tab3:
 
 with tab4:
     st.title("Evaluatie van model")
-    max_delays = range(0, max_delay, 10)  # van 0 t/m 300 minuten, stap 10
-
-    mae_scores = []
-    rmse_scores = []
-    r2_scores = []
-
-    for md in max_delays:
-        df_md = df[df['duration_minutes'] <= md]
-
-        if len(df_md) < 50:
-            mae_scores.append(None)
-            rmse_scores.append(None)
-            r2_scores.append(None)
-            continue
-
-        y = df_md['duration_minutes']
-        X = df_md[[
-            'ns_lines',
-            'rdt_lines',
-            'begin_station',
-            'end_station',
-            'cause_group',
-            'cause_nl',
-            'start_hour',
-            'start_dayofweek',
-            'start_month'
-        ]]
-    
-        X_train, X_test, y_train, y_test = train_test_split(
-            X, y, test_size=0.2, random_state=42
-        )
-    
-        model.fit(X_train, y_train)
-        y_pred = model.predict(X_test)
-    
-        mae_scores.append(mean_absolute_error(y_test, y_pred))
-        rmse_scores.append(root_mean_squared_error(y_test, y_pred))
-        r2_scores.append(r2_score(y_test, y_pred))
-    
-    fig, ax1 = plt.subplots(figsize=(10, 6))
-    
-    ax1.plot(max_delays, mae_scores, label="MAE (minuten)", marker='o')
-    ax1.plot(max_delays, rmse_scores, label="RMSE (minuten)", marker='o')
-    ax1.set_xlabel("Maximale vertraging (minuten)")
-    ax1.set_ylabel("Fout (minuten)")
-    ax1.legend(loc="upper left")
-    ax1.grid(True)
-    
-    ax2 = ax1.twinx()
-    ax2.plot(max_delays, r2_scores, label="R²", color='green', marker='x')
-    ax2.set_ylabel("R²")
-    ax2.legend(loc="upper right")
-    
-    st.pyplot(fig)
+    image = Image.open("metrics ml.png")
+    st.image(image, caption="Metrics van het model", use_column_width=True)
