@@ -9,10 +9,6 @@ from sklearn.pipeline import Pipeline
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error, root_mean_squared_error, r2_score
 
-@st.cache_data
-def filter_df(df, max_delay):
-    return df[df['duration_minutes'] <= max_delay]
-
 # 1. Data inlezen
 jaren = ["24", "25"]
 
@@ -79,8 +75,8 @@ with tab3:
     )
     
     # Filter dataframe
-    df_filtered = filter_df(df, max_delay)
-    df_filtered = df_filtered.sort_values("rdt_lines")
+    df = df[df['duration_minutes'] <= max_delay]
+    df = df.sort_values("rdt_lines")
     
     
     rdt_line = st.selectbox(
