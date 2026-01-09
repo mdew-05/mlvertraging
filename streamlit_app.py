@@ -149,8 +149,8 @@ with tab3:
             'rdt_lines': rdt_line,
             'begin_station': begin_station,
             'end_station': end_station,
-            'cause_group': df['cause_group'].mode()[0],  # voorbeeld, kan default zijn
-            'cause_nl': df['cause_nl'].mode()[0],       # voorbeeld, kan default zijn
+            'cause_group': df['cause_group'].mode()[0], 
+            'cause_nl': df['cause_nl'].mode()[0],      
             'start_hour': start_datetime.hour,
             'start_dayofweek': start_datetime.weekday(),
             'start_month': start_datetime.month
@@ -161,7 +161,7 @@ with tab3:
 
 with tab4:
     st.title("Evaluatie van model")
-    max_delays = range(0, 301, 10)  # van 0 t/m 300 minuten, stap 10
+    max_delays = range(0, 151, 10)  # van 0 t/m 300 minuten, stap 10
 
     mae_scores = []
     rmse_scores = []
@@ -169,7 +169,12 @@ with tab4:
 
     for md in max_delays:
         df_md = df[df['duration_minutes'] <= md]
-    
+
+        if len(df_md) < 100:
+            mae_scores.append(None)
+            rmse_scores.append(None)
+            r2_scores.append(None)
+            continue
 
         y = df_md['duration_minutes']
         X = df_md[[
